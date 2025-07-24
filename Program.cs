@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using FeedbackApp.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,20 +7,18 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Register DbContext with SQLite
+// Register DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp", policy =>
-        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-});
+// Add JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         var jwtKey = builder.Configuration["Jwt:Key"];
+        var issuer = builder.Configuration["Jwt:Issuer"];
+        var audience = builder.Configuration["Jwt:Audience"];
+
         if (string.IsNullOrEmpty(jwtKey))
             throw new Exception("JWT Key not found in configuration!");
 
@@ -27,16 +26,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+            ValidateAudience = true,
+            ValidAudience = audience,
+            ValidateLifetime = true,
+            RoleClaimType = ClaimTypes.Role // ✅ Required for role-based [Authorize]
         };
     });
 
+// Enable CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.UseCors("AllowReactApp");
-app.UseAuthentication(); // 👈 Add this
+app.UseAuthentication(); // 👈 must be before Authorization
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
+
 namespace FeedbackApp.API.Controllers
 {
     [ApiController]
@@ -50,14 +51,18 @@ namespace FeedbackApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto formData)
         {
+            var token = "";
             if (formData.Email == "admin@gmail.com")
             {
                 if (formData.Password == "admin@123")
                 {
+                    token = JwtHelper.GenerateToken(0, "Admin", "admin@gmail.com", "admin", _config);
+
                     return Ok(new
                     {
                         message = "✅ Login successful",
                         role = "admin",
+                        token,
                         email = "admin@gmail.com",
                         username = "Admin"
                     });
@@ -80,8 +85,7 @@ namespace FeedbackApp.API.Controllers
             if (user.PasswordHash != passwordHash)
                 return Unauthorized(new { message = "❌ Invalid email or password" });
 
-            var token = JwtHelper.GenerateToken(user.Email, "user", _config);
-
+            token = JwtHelper.GenerateToken(user.Id, user.Username, user.Email, "user", _config);
             return Ok(new
             {
                 message = "✅ Login successful",
