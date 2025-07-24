@@ -7,5 +7,7 @@ namespace FeedbackApp.API.Models
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public string PasswordKey { get; set; } = string.Empty; // Needed for correct password validation
+
+        // public bool isAdmin { get; set; }
     }
 }

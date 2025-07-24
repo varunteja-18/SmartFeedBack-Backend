@@ -159,3 +159,4 @@ C:\Users\labadmin\varun\SmartBackend\FeedbackApp.API\bin\Debug\net9.0\Microsoft.
 C:\Users\labadmin\varun\SmartBackend\FeedbackApp.API\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\labadmin\varun\SmartBackend\FeedbackApp.API\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\labadmin\varun\SmartBackend\FeedbackApp.API\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\labadmin\varun\SmartBackend\FeedbackApp.API\obj\Debug\net9.0\FeedbackApp.API.sourcelink.json

@@ -50,6 +50,25 @@ namespace FeedbackApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto formData)
         {
+            if (formData.Email == "admin@gmail.com")
+            {
+                if (formData.Password == "admin@123")
+                {
+                    return Ok(new
+                    {
+                        message = "✅ Login successful",
+                        role = "admin",
+                        email = "admin@gmail.com",
+                        username = "Admin"
+                    });
+                }
+                else
+                {
+                    return Unauthorized(new { message = "❌ Invalid email or password" });
+
+                }
+
+            }
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == formData.Email);
             if (user == null)
                 return Unauthorized(new { message = "❌ User not found" });
@@ -61,15 +80,14 @@ namespace FeedbackApp.API.Controllers
             if (user.PasswordHash != passwordHash)
                 return Unauthorized(new { message = "❌ Invalid email or password" });
 
-            string role = user.Email == "admin@gmail.com" ? "admin" : "user";
-            var token = JwtHelper.GenerateToken(user.Email, role, _config);
+            var token = JwtHelper.GenerateToken(user.Email, "user", _config);
 
             return Ok(new
             {
                 message = "✅ Login successful",
                 token,
                 email = user.Email,
-                role = role,
+                role = "user",
                 username = user.Username
             });
         }
