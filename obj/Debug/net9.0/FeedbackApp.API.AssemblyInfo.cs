@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FeedbackApp.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59f570009982ba403be9276d81e11c79a2a92b4b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f06ac29651594048b572d74af6ce39623dbc607")]
 [assembly: System.Reflection.AssemblyProductAttribute("FeedbackApp.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FeedbackApp.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
