@@ -54,7 +54,7 @@ namespace FeedbackApp.API.Controllers
             var token = "";
             if (formData.Email == "admin@gmail.com")
             {
-                if (formData.Password == "admin@123")
+                if (formData.Password == "Admin@123")
                 {
                     token = JwtHelper.GenerateToken(0, "Admin", "admin@gmail.com", "admin", _config);
 
